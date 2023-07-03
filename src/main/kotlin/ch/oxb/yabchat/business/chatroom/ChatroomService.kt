@@ -5,49 +5,26 @@ import ch.oxb.yabchat.adapters.rest.dtos.JoinChatroomDTO
 import ch.oxb.yabchat.adapters.rest.dtos.LeaveChatroomDTO
 import ch.oxb.yabchat.business.user.UserService
 import jakarta.enterprise.context.ApplicationScoped
-import java.util.*
 
 
 @ApplicationScoped
-class ChatroomService(val userService: UserService) {
+class ChatroomService(val userService: UserService, val chatroomRepository: ChatroomRepository) {
 
-    private var rooms = mutableListOf(
-        Chatroom(
-            "bdf79854-cf41-4615-80b2-6a69b479874f",
-            "Zühlke Chat",
-            "Alice 42 Zühlke Chat",
-            listOf()
-        ),
-        Chatroom(
-            "d9667cec-1b61-4b59-8970-a8c3d3704e95",
-            "SBB Chat",
-            "Automaten Team Chat",
-            listOf()
-        ),
-    )
-
-    fun createChatroom(createChatroom: CreateChatroomDTO): Chatroom {
-        val chatroom = Chatroom(
-            UUID.randomUUID().toString(),
-            createChatroom.name,
-            createChatroom.description,
-            listOf()
-        )
-        rooms.add(chatroom);
-        return chatroom
+    fun createChatroom(createChatroomDTO: CreateChatroomDTO): Chatroom {
+        return chatroomRepository.createChatroom(createChatroomDTO)
     }
 
     fun getChatrooms(): List<Chatroom> {
-        return rooms
+        return chatroomRepository.getChatrooms()
     }
 
-    fun findChatroomById(id: String): Chatroom? {
-        return rooms.find { room: Chatroom -> room.id == id }
+    fun findChatroomById(chatroomId: String): Chatroom? {
+        return chatroomRepository.findChatroomById(chatroomId)
     }
 
     fun joinChatroom(chatroomId: String, action: JoinChatroomDTO): Chatroom? {
         val user = userService.findUserById(action.userId)
-        val chatroom = rooms.find { chatroom ->  chatroom.id == chatroomId }
+        val chatroom = chatroomRepository.findChatroomById(chatroomId)
 
         if (user != null && chatroom != null) {
             chatroom.users = chatroom.users.plus(user).distinct()
@@ -58,7 +35,7 @@ class ChatroomService(val userService: UserService) {
 
     fun leaveChatroom(chatroomId: String, action: LeaveChatroomDTO): Chatroom? {
         val user = userService.findUserById(action.userId)
-        val chatroom = rooms.find { chatroom ->  chatroom.id == chatroomId }
+        val chatroom = chatroomRepository.findChatroomById(chatroomId)
 
         if (user != null && chatroom != null) {
             chatroom.users = chatroom.users.minus(user)
