@@ -26,4 +26,16 @@ class ChatroomEndpoint(var chatroomService: ChatroomService) {
     fun createChatroom(chatroom: CreateChatroomDTO): Chatroom {
         return chatroomService.createChatroom(chatroom)
     }
+
+    @PUT
+    @Path("/{id}/join")
+    fun joinRoom(id: String, userId: String): Chatroom? {
+        return chatroomService.joinChatroom(id, userId)
+    }
+
+    @PUT
+    @Path("/{id}/leave")
+    fun leaveRoom(id: String, userId: String): Chatroom? {
+        return chatroomService.leaveChatroom(id, userId)
+    }
 }
