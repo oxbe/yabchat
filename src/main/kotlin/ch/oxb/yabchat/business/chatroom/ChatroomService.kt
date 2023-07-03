@@ -1,6 +1,8 @@
 package ch.oxb.yabchat.business.chatroom
 
 import ch.oxb.yabchat.adapters.rest.dtos.CreateChatroomDTO
+import ch.oxb.yabchat.adapters.rest.dtos.JoinChatroomDTO
+import ch.oxb.yabchat.adapters.rest.dtos.LeaveChatroomDTO
 import ch.oxb.yabchat.business.user.UserService
 import jakarta.enterprise.context.ApplicationScoped
 import java.util.*
@@ -43,19 +45,19 @@ class ChatroomService(val userService: UserService) {
         return rooms.find { room: Chatroom -> room.id == id }
     }
 
-    fun joinChatroom(chatroomId: String, userId: String): Chatroom? {
-        val user = userService.findUserById(userId)
+    fun joinChatroom(chatroomId: String, action: JoinChatroomDTO): Chatroom? {
+        val user = userService.findUserById(action.userId)
         val chatroom = rooms.find { chatroom ->  chatroom.id == chatroomId }
 
         if (user != null && chatroom != null) {
-            chatroom.users = chatroom.users.plus(user)
+            chatroom.users = chatroom.users.plus(user).distinct()
         }
 
         return chatroom
     }
 
-    fun leaveChatroom(chatroomId: String, userId: String): Chatroom? {
-        val user = userService.findUserById(userId)
+    fun leaveChatroom(chatroomId: String, action: LeaveChatroomDTO): Chatroom? {
+        val user = userService.findUserById(action.userId)
         val chatroom = rooms.find { chatroom ->  chatroom.id == chatroomId }
 
         if (user != null && chatroom != null) {

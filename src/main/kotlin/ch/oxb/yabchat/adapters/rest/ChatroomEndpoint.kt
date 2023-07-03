@@ -1,6 +1,8 @@
 package ch.oxb.yabchat.adapters.rest
 
 import ch.oxb.yabchat.adapters.rest.dtos.CreateChatroomDTO
+import ch.oxb.yabchat.adapters.rest.dtos.JoinChatroomDTO
+import ch.oxb.yabchat.adapters.rest.dtos.LeaveChatroomDTO
 import ch.oxb.yabchat.business.chatroom.Chatroom
 import ch.oxb.yabchat.business.chatroom.ChatroomService
 import jakarta.ws.rs.*
@@ -29,13 +31,13 @@ class ChatroomEndpoint(var chatroomService: ChatroomService) {
 
     @PUT
     @Path("/{id}/join")
-    fun joinRoom(id: String, userId: String): Chatroom? {
-        return chatroomService.joinChatroom(id, userId)
+    fun joinRoom(id: String, action: JoinChatroomDTO): Chatroom? {
+        return chatroomService.joinChatroom(id, action)
     }
 
     @PUT
     @Path("/{id}/leave")
-    fun leaveRoom(id: String, userId: String): Chatroom? {
-        return chatroomService.leaveChatroom(id, userId)
+    fun leaveRoom(id: String, action: LeaveChatroomDTO): Chatroom? {
+        return chatroomService.leaveChatroom(id, action)
     }
 }
