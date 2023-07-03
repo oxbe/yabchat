@@ -1,5 +1,6 @@
 package ch.oxb.yabchat.business.user
 
+import ch.oxb.yabchat.adapters.inmemory.UserRepository
 import ch.oxb.yabchat.adapters.rest.dtos.CreateUserDTO
 import jakarta.enterprise.context.ApplicationScoped
 

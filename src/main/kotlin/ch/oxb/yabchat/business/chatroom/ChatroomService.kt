@@ -1,5 +1,6 @@
 package ch.oxb.yabchat.business.chatroom
 
+import ch.oxb.yabchat.adapters.inmemory.ChatroomRepository
 import ch.oxb.yabchat.adapters.rest.dtos.CreateChatroomDTO
 import ch.oxb.yabchat.adapters.rest.dtos.JoinChatroomDTO
 import ch.oxb.yabchat.adapters.rest.dtos.LeaveChatroomDTO
