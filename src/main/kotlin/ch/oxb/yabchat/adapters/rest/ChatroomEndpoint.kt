@@ -1,32 +1,29 @@
 package ch.oxb.yabchat.adapters.rest
 
 import ch.oxb.yabchat.adapters.rest.dtos.CreateChatroomDTO
-import ch.oxb.yabchat.business.Chatroom
-import jakarta.ws.rs.GET
-import jakarta.ws.rs.POST
-import jakarta.ws.rs.Path
-import jakarta.ws.rs.Produces
+import ch.oxb.yabchat.business.chatroom.Chatroom
+import ch.oxb.yabchat.business.chatroom.ChatroomService
+import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 
 @Path("/chatroom")
-class ChatroomEndpoint {
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+class ChatroomEndpoint(var chatroomService: ChatroomService) {
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    fun getChatroom(id: String): Chatroom {
-        return Chatroom(id, "cool room", "cool description", listOf())
+    fun getChatroom(id: String): Chatroom? {
+        return chatroomService.findChatroomById(id)
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     fun getChatrooms(): List<Chatroom> {
-        return listOf(Chatroom("1", "cool room", "cool description", listOf()))
+        return chatroomService.getChatrooms()
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
     fun createChatroom(chatroom: CreateChatroomDTO): Chatroom {
-        return Chatroom("1", chatroom.name, chatroom.description, chatroom.users)
+        return chatroomService.createChatroom(chatroom)
     }
 }
