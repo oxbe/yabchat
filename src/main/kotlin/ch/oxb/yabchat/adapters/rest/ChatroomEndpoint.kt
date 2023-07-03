@@ -26,7 +26,7 @@ class ChatroomEndpoint(var chatroomService: ChatroomService) {
 
     @POST
     fun createChatroom(chatroom: CreateChatroomDTO): Chatroom {
-        return chatroomService.createChatroom(chatroom)
+        return chatroomService.saveChatroom(chatroom)
     }
 
     @PUT

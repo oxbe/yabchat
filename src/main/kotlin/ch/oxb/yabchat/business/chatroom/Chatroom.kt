@@ -5,4 +5,4 @@ import ch.oxb.yabchat.business.user.User
 class Chatroom(val id: String,
                val name: String,
                val description: String,
-               var users: List<User>)
+               var userIds: List<String>)
