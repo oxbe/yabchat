@@ -1,12 +1,13 @@
 package ch.oxb.yabchat.business.chatroom
 
 import ch.oxb.yabchat.adapters.rest.dtos.CreateChatroomDTO
+import ch.oxb.yabchat.business.user.UserService
 import jakarta.enterprise.context.ApplicationScoped
 import java.util.*
 
 
 @ApplicationScoped
-class ChatroomService {
+class ChatroomService(val userService: UserService) {
 
     private var rooms = mutableListOf(
         Chatroom(
@@ -40,5 +41,27 @@ class ChatroomService {
 
     fun findChatroomById(id: String): Chatroom? {
         return rooms.find { room: Chatroom -> room.id == id }
+    }
+
+    fun joinChatroom(chatroomId: String, userId: String): Chatroom? {
+        val user = userService.findUserById(userId)
+        val chatroom = rooms.find { chatroom ->  chatroom.id == chatroomId }
+
+        if (user != null && chatroom != null) {
+            chatroom.users = chatroom.users.plus(user)
+        }
+
+        return chatroom
+    }
+
+    fun leaveChatroom(chatroomId: String, userId: String): Chatroom? {
+        val user = userService.findUserById(userId)
+        val chatroom = rooms.find { chatroom ->  chatroom.id == chatroomId }
+
+        if (user != null && chatroom != null) {
+            chatroom.users = chatroom.users.minus(user)
+        }
+
+        return chatroom
     }
 }
