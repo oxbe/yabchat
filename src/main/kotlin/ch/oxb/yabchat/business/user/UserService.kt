@@ -2,7 +2,7 @@ package ch.oxb.yabchat.business.user
 
 import ch.oxb.yabchat.adapters.rest.dtos.CreateUserDTO
 import jakarta.enterprise.context.ApplicationScoped
-import java.util.UUID
+import java.util.*
 
 @ApplicationScoped
 class UserService {
