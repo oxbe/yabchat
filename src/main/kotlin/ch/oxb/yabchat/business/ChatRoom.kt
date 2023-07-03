@@ -1,4 +1,4 @@
 package ch.oxb.yabchat.business
 
-class ChatRoom(id: String, name: String, description: String, users: List<User>) {
+class ChatRoom(val id: String, val name: String, val description: String, val users: List<User>) {
 }

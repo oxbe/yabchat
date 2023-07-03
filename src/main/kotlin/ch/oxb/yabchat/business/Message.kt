@@ -2,5 +2,5 @@ package ch.oxb.yabchat.business
 
 import java.time.ZonedDateTime
 
-class Message(sender: User, recipient: ChatRoom, content: String, timestamp: ZonedDateTime) {
+class Message(val sender: User, val recipient: ChatRoom, val content: String, val timestamp: ZonedDateTime) {
 }

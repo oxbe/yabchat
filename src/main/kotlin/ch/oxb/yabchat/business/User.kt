@@ -1,4 +1,4 @@
 package ch.oxb.yabchat.business
 
-class User(username: String, email: String, profile: UserProfile) {
+class User(val id: String, val username: String, val email: String, val profile: UserProfile) {
 }
