@@ -1,4 +1,4 @@
-package ch.oxb.yabchat.business
+package ch.oxb.yabchat.business.chatroom
 
 import ch.oxb.yabchat.business.user.User
 
