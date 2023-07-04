@@ -36,4 +36,16 @@ class UserResource {
     fun getUser(@Name("userId") userId: String): User? {
         return userService.findUserById(userId)
     }
+
+    @Query
+    @Description("Get a user by email")
+    fun getUserWithEmail(email: String): User? {
+        return userService.findUserByEmail(email)
+    }
+
+    @Query
+    @Description("Get a user by username")
+    fun getUserWithUsername(username: String): User? {
+        return userService.findUserByUsername(username)
+    }
 }
