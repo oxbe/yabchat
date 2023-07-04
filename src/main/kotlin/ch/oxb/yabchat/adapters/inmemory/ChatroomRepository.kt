@@ -1,6 +1,7 @@
-package ch.oxb.yabchat.business.chatroom
+package ch.oxb.yabchat.adapters.inmemory
 
 import ch.oxb.yabchat.adapters.rest.dtos.CreateChatroomDTO
+import ch.oxb.yabchat.business.chatroom.Chatroom
 import jakarta.enterprise.context.ApplicationScoped
 import java.util.*
 

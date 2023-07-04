@@ -27,7 +27,7 @@ class UserEndpoint(var userService: UserService) {
     }
 
     @POST
-    fun createUser(user: CreateUserDTO): User {
-        return userService.createUser(user)
+    fun createUser(user: CreateUserDTO): User? {
+        return userService.saveUser(user)
     }
 }

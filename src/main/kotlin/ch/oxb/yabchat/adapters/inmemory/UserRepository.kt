@@ -1,6 +1,8 @@
-package ch.oxb.yabchat.business.user
+package ch.oxb.yabchat.adapters.inmemory
 
 import ch.oxb.yabchat.adapters.rest.dtos.CreateUserDTO
+import ch.oxb.yabchat.business.user.User
+import ch.oxb.yabchat.business.user.UserProfile
 import jakarta.enterprise.context.ApplicationScoped
 import java.util.*
 

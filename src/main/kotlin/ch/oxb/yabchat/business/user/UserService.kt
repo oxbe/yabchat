@@ -1,20 +1,41 @@
 package ch.oxb.yabchat.business.user
 
+import ch.oxb.yabchat.adapters.mongodb.user.UserEntity
+import ch.oxb.yabchat.adapters.mongodb.user.UserMongoRepository
 import ch.oxb.yabchat.adapters.rest.dtos.CreateUserDTO
 import jakarta.enterprise.context.ApplicationScoped
+import org.bson.types.ObjectId
 
 @ApplicationScoped
-class UserService(val userRepository: UserRepository) {
+class UserService(val userMongoRepository: UserMongoRepository) {
 
-    fun createUser(createUserDTO: CreateUserDTO): User {
-        return userRepository.createUser(createUserDTO)
+    fun saveUser(createUserDTO: CreateUserDTO): User? {
+        val userEntity = createUserEntity(createUserDTO)
+        userMongoRepository.persist(userEntity)
+        return createUser(userEntity)
     }
 
     fun getUsers(): List<User> {
-        return userRepository.getUsers()
+        return userMongoRepository.getUsers().map { u -> createUser(u) }
     }
 
     fun findUserById(userId: String): User? {
-        return userRepository.findUserById(userId)
+        return userMongoRepository.findUserById(userId)
+            ?.let { userEntity -> createUser(userEntity) }
+    }
+
+    private fun createUser(userEntity: UserEntity) = User(
+        userEntity.id.toString(),
+        userEntity.username,
+        userEntity.email,
+        null
+    )
+
+    private fun createUserEntity(createUserDTO: CreateUserDTO): UserEntity {
+        val u = UserEntity()
+        u.id = ObjectId()
+        u.email = createUserDTO.email
+        u.username = createUserDTO.username
+        return u
     }
 }
