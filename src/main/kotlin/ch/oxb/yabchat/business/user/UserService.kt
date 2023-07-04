@@ -20,6 +20,11 @@ class UserService(val userMongoRepository: UserMongoRepository) {
         return createUser(userEntity)
     }
 
+    fun updateUser(userEntity: UserEntity): User? {
+        userMongoRepository.update(userEntity)
+        return createUser(userEntity)
+    }
+
     fun getUsers(): List<User> {
         return userMongoRepository.getUsers().map { u -> createUser(u) }
     }
