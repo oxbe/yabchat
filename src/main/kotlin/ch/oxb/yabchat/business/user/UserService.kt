@@ -25,12 +25,12 @@ class UserService(val userMongoRepository: UserMongoRepository) {
     }
 
     fun findUserByEmail(email: String): User? {
-        return userMongoRepository.findByEmail(email)
+        return userMongoRepository.findUserByEmail(email)
             ?.let { userEntity -> createUser(userEntity) }
     }
 
     fun findUserByUsername(username: String): User? {
-        return userMongoRepository.findByUsername(username)
+        return userMongoRepository.findUserByUsername(username)
             ?.let { userEntity -> createUser(userEntity) }
     }
 
