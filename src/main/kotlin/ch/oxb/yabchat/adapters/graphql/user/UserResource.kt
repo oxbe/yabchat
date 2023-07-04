@@ -1,11 +1,14 @@
 package ch.oxb.yabchat.adapters.graphql.user
 
+import ch.oxb.yabchat.business.chatroom.Chatroom
+import ch.oxb.yabchat.business.chatroom.ChatroomService
 import ch.oxb.yabchat.business.user.User
 import ch.oxb.yabchat.business.user.UserService
 import jakarta.inject.Inject
 import org.eclipse.microprofile.graphql.Description
 import org.eclipse.microprofile.graphql.GraphQLApi
 import org.eclipse.microprofile.graphql.Query
+import org.eclipse.microprofile.graphql.Source
 
 @GraphQLApi
 class UserResource {
@@ -13,9 +16,17 @@ class UserResource {
     @Inject
     lateinit var userService: UserService
 
+    @Inject
+    lateinit var chatroomService: ChatroomService
+
     @Query("allUsers")
     @Description("Get all users")
     fun getAllUsers(): List<User> {
         return userService.getUsers()
+    }
+
+    fun chatrooms(@Source user: User): List<Chatroom> {
+        return chatroomService.getChatrooms()
+            .filter { chatroom: Chatroom -> chatroom.userIds.contains(user.id) }
     }
 }
