@@ -7,6 +7,7 @@ import ch.oxb.yabchat.business.user.UserService
 import jakarta.inject.Inject
 import org.eclipse.microprofile.graphql.Description
 import org.eclipse.microprofile.graphql.GraphQLApi
+import org.eclipse.microprofile.graphql.Name
 import org.eclipse.microprofile.graphql.Query
 import org.eclipse.microprofile.graphql.Source
 
@@ -28,5 +29,11 @@ class UserResource {
     fun chatrooms(@Source user: User): List<Chatroom> {
         return chatroomService.getChatrooms()
             .filter { chatroom: Chatroom -> chatroom.userIds.contains(user.id) }
+    }
+
+    @Query
+    @Description("Get a user")
+    fun getUser(@Name("userId") userId: String): User? {
+        return userService.findUserById(userId)
     }
 }
