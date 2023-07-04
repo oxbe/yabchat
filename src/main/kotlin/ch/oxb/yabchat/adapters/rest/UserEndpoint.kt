@@ -4,6 +4,7 @@ import ch.oxb.yabchat.adapters.rest.dtos.CreateUserDTO
 import ch.oxb.yabchat.business.user.User
 import ch.oxb.yabchat.business.user.UserService
 import jakarta.ws.rs.Consumes
+import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.POST
 import jakarta.ws.rs.Path
@@ -29,5 +30,11 @@ class UserEndpoint(var userService: UserService) {
     @POST
     fun createUser(user: CreateUserDTO): User? {
         return userService.saveUser(user)
+    }
+
+    @DELETE
+    @Path("/{userId}")
+    fun deleteUser(userId: String) {
+        userService.deleteUser(userId)
     }
 }

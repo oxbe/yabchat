@@ -48,4 +48,8 @@ class UserService(val userMongoRepository: UserMongoRepository) {
         u.username = createUserDTO.username
         return u
     }
+
+    fun deleteUser(userId: String) {
+        userMongoRepository.deleteUserById(userId)
+    }
 }
