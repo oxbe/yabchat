@@ -15,6 +15,11 @@ class UserService(val userMongoRepository: UserMongoRepository) {
         return createUser(userEntity)
     }
 
+    fun saveUser(userEntity: UserEntity): User? {
+        userMongoRepository.persist(userEntity)
+        return createUser(userEntity)
+    }
+
     fun getUsers(): List<User> {
         return userMongoRepository.getUsers().map { u -> createUser(u) }
     }
