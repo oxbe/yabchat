@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -17,12 +17,17 @@
             min-height: 300px;
             max-height: 300px;
         }
+
+        .bg-dark {
+            background-color: #ea6014;
+        }
+
     </style>
 </head>
 
 <body>
 
-<nav class="navbar navbar-default navbar-pf" role="navigation">
+<nav class="navbar navbar-default navbar-pf bg-dark" role="navigation" style="color: #ea6014">
     <div class="navbar-header">
         <a class="navbar-brand" href="/">
             <p><strong>YabChat (Web Edition)</strong></p>
@@ -35,10 +40,11 @@
     <div class="row">
         <input id="name" class="col-md-4" type="text" placeholder="Your name">
         <button id="connect" class="col-md-1 btn btn-primary" type="button">Connect</button>
+        <label style="padding-left: 10px">Please only login with your account, thank you :)</label>
         <br/>
         <br/>
     </div>
-    <div class="row">
+    <div class="row" style="padding-bottom: 10px">
         <textarea class="col-md-8" id="chat"></textarea>
     </div>
     <div class="row">
@@ -110,7 +116,7 @@
                 $("#msg").focus();
             };
             socket.onmessage = function (m) {
-                console.log("Got message: " + m.data);
+                console.log("Got message: " + m.data)
                 $("#chat").append(m.data + "\n");
                 scrollToBottom();
             };
