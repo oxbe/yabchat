@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Quarkus Chat!</title>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
+    <title>YabChat</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://upload.wikimedia.org/wikipedia/commons/4/46/Yab_logo.svg">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
 
     <style>
         #chat {
@@ -18,18 +21,20 @@
 </head>
 
 <body>
+
 <nav class="navbar navbar-default navbar-pf" role="navigation">
     <div class="navbar-header">
         <a class="navbar-brand" href="/">
-            <p><strong>>> Quarkus Chat!</strong></p>
+            <p><strong>YabChat (Web Edition)</strong></p>
         </a>
     </div>
 </nav>
+
 <div class="container">
     <br/>
     <div class="row">
-        <input id="name" class="col-md-4" type="text" placeholder="your name">
-        <button id="connect" class="col-md-1 btn btn-primary" type="button">connect</button>
+        <input id="name" class="col-md-4" type="text" placeholder="Your name">
+        <button id="connect" class="col-md-1 btn btn-primary" type="button">Connect</button>
         <br/>
         <br/>
     </div>
@@ -37,8 +42,8 @@
         <textarea class="col-md-8" id="chat"></textarea>
     </div>
     <div class="row">
-        <input class="col-md-6" id="msg" type="text" placeholder="enter your message">
-        <button class="col-md-1 btn btn-primary" id="send" type="button" disabled>send</button>
+        <input class="col-md-6" id="msg" type="text" placeholder="Enter your message">
+        <button class="col-md-1 btn btn-primary" id="send" type="button" disabled>Send</button>
     </div>
 
 </div>
@@ -48,38 +53,55 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/js/patternfly.min.js"></script>
 
 <script type="text/javascript">
-    var connected = false;
-    var socket;
+    let connected = false;
+    let socket;
 
-    $( document ).ready(function() {
+    let commands = new Map([["/list", "/chatroom"]])
+
+    const url = "http://localhost:8080"
+
+    const sendMessage = async function () {
+        if (connected) {
+            const message = $("#msg").val();
+            if (commands.has(message)) {
+                socket.send(await executeCommand(message))
+            } else {
+                console.log("Sending " + message);
+                socket.send(message);
+            }
+            $("#msg").val("");
+        }
+    };
+
+    $(document).ready(function () {
         $("#connect").click(connect);
         $("#send").click(sendMessage);
 
-        $("#name").keypress(function(event){
-            if(event.keyCode == 13 || event.which == 13) {
+        $("#name").keypress(function (event) {
+            if (event.keyCode === 13 || event.which === 13) {
                 connect();
             }
         });
 
-        $("#msg").keypress(function(event) {
-            if(event.keyCode == 13 || event.which == 13) {
+        $("#msg").keypress(function (event) {
+            if (event.keyCode === 13 || event.which === 13) {
                 sendMessage();
             }
         });
 
-        $("#chat").change(function() {
+        $("#chat").change(function () {
             scrollToBottom();
         });
 
         $("#name").focus();
     });
 
-    var connect = function() {
-        if (! connected) {
+    var connect = function () {
+        if (!connected) {
             var name = $("#name").val();
             console.log("Val: " + name);
             socket = new WebSocket("ws://" + location.host + "/chat/" + name);
-            socket.onopen = function() {
+            socket.onopen = function () {
                 connected = true;
                 console.log("Connected to the web socket");
                 $("#send").attr("disabled", false);
@@ -87,7 +109,7 @@
                 $("#name").attr("disabled", true);
                 $("#msg").focus();
             };
-            socket.onmessage =function(m) {
+            socket.onmessage = function (m) {
                 console.log("Got message: " + m.data);
                 $("#chat").append(m.data + "\n");
                 scrollToBottom();
@@ -95,14 +117,14 @@
         }
     };
 
-    var sendMessage = function() {
-        if (connected) {
-            var value = $("#msg").val();
-            console.log("Sending " + value);
-            socket.send(value);
-            $("#msg").val("");
-        }
-    };
+    const executeCommand = async function (msg) {
+        const path = commands.get(msg)
+        const response = await fetch(url + path, {
+            method: "GET"
+        });
+        const data = await response.json()
+        return data.map(a => a.name)
+    }
 
     var scrollToBottom = function () {
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
