@@ -1,15 +1,12 @@
 package ch.oxb.yabchat.adapters.graphql.user
 
+import ch.oxb.yabchat.adapters.mongodb.user.UserEntity
 import ch.oxb.yabchat.business.chatroom.Chatroom
 import ch.oxb.yabchat.business.chatroom.ChatroomService
 import ch.oxb.yabchat.business.user.User
 import ch.oxb.yabchat.business.user.UserService
 import jakarta.inject.Inject
-import org.eclipse.microprofile.graphql.Description
-import org.eclipse.microprofile.graphql.GraphQLApi
-import org.eclipse.microprofile.graphql.Name
-import org.eclipse.microprofile.graphql.Query
-import org.eclipse.microprofile.graphql.Source
+import org.eclipse.microprofile.graphql.*
 
 @GraphQLApi
 class UserResource {
@@ -47,5 +44,10 @@ class UserResource {
     @Description("Get a user by username")
     fun getUserWithUsername(username: String): User? {
         return userService.findUserByUsername(username)
+    }
+
+    @Mutation
+    fun createUser(userEntity: UserEntity): User? {
+        return userService.saveUser(userEntity)
     }
 }
