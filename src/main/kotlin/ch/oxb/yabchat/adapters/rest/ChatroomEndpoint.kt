@@ -30,14 +30,14 @@ class ChatroomEndpoint(var chatroomService: ChatroomService) {
     }
 
     @PUT
-    @Path("/{id}/join")
-    fun joinRoom(id: String, action: JoinChatroomDTO): Chatroom? {
-        return chatroomService.joinChatroom(id, action)
+    @Path("/join")
+    fun joinRoom(action: JoinChatroomDTO): Chatroom? {
+        return chatroomService.joinChatroom(action)
     }
 
     @PUT
-    @Path("/{id}/leave")
-    fun leaveRoom(id: String, action: LeaveChatroomDTO): Chatroom? {
-        return chatroomService.leaveChatroom(id, action)
+    @Path("/leave")
+    fun leaveRoom(action: LeaveChatroomDTO): Chatroom? {
+        return chatroomService.leaveChatroom(action)
     }
 }

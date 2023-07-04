@@ -30,9 +30,9 @@ class ChatroomService(val userService: UserService,
             ?.let { chatroomEntity -> createChatroom(chatroomEntity) }
     }
 
-    fun joinChatroom(chatroomId: String, joinChatroomDTO: JoinChatroomDTO): Chatroom? {
+    fun joinChatroom(joinChatroomDTO: JoinChatroomDTO): Chatroom? {
         val user = userService.findUserById(joinChatroomDTO.userId)
-        val chatroomEntity = chatroomMongoRepository.findChatroomById(chatroomId)
+        val chatroomEntity = chatroomMongoRepository.findChatroomById(joinChatroomDTO.chatroomId)
 
         if (user != null && chatroomEntity != null) {
             chatroomEntity.userIds = chatroomEntity.userIds.plus(joinChatroomDTO.userId).distinct()
@@ -42,9 +42,9 @@ class ChatroomService(val userService: UserService,
         return chatroomEntity?.let { createChatroom(chatroomEntity) }
     }
 
-    fun leaveChatroom(chatroomId: String, leaveChatroomDTO: LeaveChatroomDTO): Chatroom? {
+    fun leaveChatroom(leaveChatroomDTO: LeaveChatroomDTO): Chatroom? {
         val user = userService.findUserById(leaveChatroomDTO.userId)
-        val chatroomEntity = chatroomMongoRepository.findChatroomById(chatroomId)
+        val chatroomEntity = chatroomMongoRepository.findChatroomById(leaveChatroomDTO.chatroomId)
 
         if (user != null && chatroomEntity != null) {
             chatroomEntity.userIds = chatroomEntity.userIds.minus(leaveChatroomDTO.userId)
