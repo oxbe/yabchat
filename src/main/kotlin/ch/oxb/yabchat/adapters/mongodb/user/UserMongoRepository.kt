@@ -7,8 +7,8 @@ import org.bson.types.ObjectId
 @ApplicationScoped
 class UserMongoRepository: PanacheMongoRepository<UserEntity> {
     fun findUserById(id: String) = findById(ObjectId(id))
-    fun findByEmail(email: String) = find("email", email).firstResult()
-    fun findByUsername(email: String) = find("username", email).firstResult()
+    fun findUserByEmail(email: String) = find("email", email).firstResult()
+    fun findUserByUsername(email: String) = find("username", email).firstResult()
     fun deleteUserById(id: String) = deleteById(ObjectId(id))
     fun getUsers() = listAll()
 }

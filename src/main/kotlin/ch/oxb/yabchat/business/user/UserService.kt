@@ -15,6 +15,11 @@ class UserService(val userMongoRepository: UserMongoRepository) {
         return createUser(userEntity)
     }
 
+    fun saveUser(userEntity: UserEntity): User? {
+        userMongoRepository.persist(userEntity)
+        return createUser(userEntity)
+    }
+
     fun getUsers(): List<User> {
         return userMongoRepository.getUsers().map { u -> createUser(u) }
     }
@@ -25,12 +30,12 @@ class UserService(val userMongoRepository: UserMongoRepository) {
     }
 
     fun findUserByEmail(email: String): User? {
-        return userMongoRepository.findByEmail(email)
+        return userMongoRepository.findUserByEmail(email)
             ?.let { userEntity -> createUser(userEntity) }
     }
 
     fun findUserByUsername(username: String): User? {
-        return userMongoRepository.findByUsername(username)
+        return userMongoRepository.findUserByUsername(username)
             ?.let { userEntity -> createUser(userEntity) }
     }
 
