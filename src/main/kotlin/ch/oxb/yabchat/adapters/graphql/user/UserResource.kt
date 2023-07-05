@@ -47,7 +47,20 @@ class UserResource {
     }
 
     @Mutation
+    @Description("Create a user")
     fun createUser(userEntity: UserEntity): User? {
         return userService.saveUser(userEntity)
+    }
+
+    @Mutation
+    @Description("Update a user")
+    fun updateUser(userEntity: UserEntity): User? {
+        return userService.updateUser(userEntity)
+    }
+
+    @Mutation
+    @Description("Delete a user")
+    fun deleteUser(userId: String) {
+        return userService.deleteUser(userId)
     }
 }
