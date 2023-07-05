@@ -1,7 +1,7 @@
 package ch.oxb.yabchat.adapters.websocket
 
-import ch.oxb.yabchat.business.message.Message
 import ch.oxb.yabchat.business.chatroom.Chatroom
+import ch.oxb.yabchat.business.message.Message
 import ch.oxb.yabchat.business.message.MessageService
 import ch.oxb.yabchat.business.user.User
 import ch.oxb.yabchat.business.user.UserService
@@ -53,7 +53,7 @@ class ChatSocket(
     @OnMessage
     fun onMessage(messageContent: String, @PathParam("username") username: String) {
         val user = userService.findUserByUsername(username)
-        val message = Message(user!!, chatroom, messageContent, OffsetDateTime.now())
+        val message = Message(user!!.id, user.username, messageContent, ZonedDateTime.now())
         messageService.saveMessage(message)
         if (message.content.equals("_ready_", ignoreCase = true)) {
             broadcast("User ${user.username} joined")
