@@ -79,9 +79,26 @@
         }
     };
 
+    const init = async function () {
+        const response = await fetch(url + "/message", {
+            method: "GET"
+        });
+        const data = await response.json()
+
+        console.log(data)
+
+        for (const item of data) {
+            $("#chat").append(">> " + item.senderName+ ": " + item.content + "\n");
+        }
+
+        scrollToBottom();
+    }
+
     $(document).ready(function () {
         $("#connect").click(connect);
         $("#send").click(sendMessage);
+
+        init();
 
         $("#name").keypress(function (event) {
             if (event.keyCode === 13 || event.which === 13) {

@@ -1,7 +1,5 @@
 package ch.oxb.yabchat.business.message
 
-import ch.oxb.yabchat.business.chatroom.Chatroom
-import ch.oxb.yabchat.business.user.User
-import java.time.OffsetDateTime
+import java.time.ZonedDateTime
 
-class Message(val sender: User, val recipient: Chatroom, val content: String, val timestamp: OffsetDateTime)
+class Message(val senderUserId: String, val senderName: String, val content: String, val timestamp: ZonedDateTime)
