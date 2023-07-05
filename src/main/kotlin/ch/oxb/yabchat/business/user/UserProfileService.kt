@@ -53,11 +53,10 @@ class UserProfileService(val userProfileMongoRepository: UserProfileMongoReposit
 
     private fun updateUserProfileEntity(userProfileEntity: UserProfileEntity,
                                         updateUserProfileDTO: UpdateUserProfileDTO): UserProfileEntity {
-        return userProfileEntity.let { entity ->
-            entity.firstName = updateUserProfileDTO.firstName
-            entity.lastName = updateUserProfileDTO.lastName
-            entity.bio = updateUserProfileDTO.bio
-            entity
+        return userProfileEntity.apply {
+            this.firstName = updateUserProfileDTO.firstName
+            this.lastName = updateUserProfileDTO.lastName
+            this.bio = updateUserProfileDTO.bio
         }
     }
 }
