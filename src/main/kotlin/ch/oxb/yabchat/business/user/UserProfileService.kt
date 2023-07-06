@@ -1,5 +1,6 @@
 package ch.oxb.yabchat.business.user
 
+import ch.oxb.yabchat.adapters.graphql.user.UpdateUserProfileEntity
 import ch.oxb.yabchat.adapters.mongodb.user.UserProfileEntity
 import ch.oxb.yabchat.adapters.mongodb.user.UserProfileMongoRepository
 import ch.oxb.yabchat.adapters.rest.dtos.CreateUserProfileDTO
@@ -19,6 +20,13 @@ class UserProfileService(val userProfileMongoRepository: UserProfileMongoReposit
     fun updateUserProfile(id: String, updateUserProfileDTO: UpdateUserProfileDTO): UserProfile? {
         return userProfileMongoRepository.findUserProfileByUserId(id)
             ?.let { entity -> updateUserProfileEntity(entity, updateUserProfileDTO) }
+            ?.let { entity -> userProfileMongoRepository.update(entity); entity }
+            ?.let { entity ->  createUserProfile(entity) }
+    }
+
+    fun updateUserProfile(updateUserProfileEntity: UpdateUserProfileEntity): UserProfile? {
+        return userProfileMongoRepository.findUserProfileByUserId(updateUserProfileEntity.userId)
+            ?.let { entity -> updateUserProfileEntity(entity, updateUserProfileEntity) }
             ?.let { entity -> userProfileMongoRepository.update(entity); entity }
             ?.let { entity ->  createUserProfile(entity) }
     }
@@ -57,6 +65,15 @@ class UserProfileService(val userProfileMongoRepository: UserProfileMongoReposit
             this.firstName = updateUserProfileDTO.firstName
             this.lastName = updateUserProfileDTO.lastName
             this.bio = updateUserProfileDTO.bio
+        }
+    }
+
+    private fun updateUserProfileEntity(userProfileEntity: UserProfileEntity,
+                                        updateUserProfileEntity: UpdateUserProfileEntity): UserProfileEntity {
+        return userProfileEntity.apply {
+            this.firstName = updateUserProfileEntity.firstName.toString()
+            this.lastName = updateUserProfileEntity.lastName.toString()
+            this.bio = updateUserProfileEntity.bio.toString()
         }
     }
 }
