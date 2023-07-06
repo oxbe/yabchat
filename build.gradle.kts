@@ -49,3 +49,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
     kotlinOptions.javaParameters = true
 }
+
+tasks.quarkusBuild {
+    nativeArgs {
+        "container-build" to true
+        "builder-image" to "quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.3-java17"
+    }
+}
