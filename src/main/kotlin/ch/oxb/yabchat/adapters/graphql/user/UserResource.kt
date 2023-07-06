@@ -4,6 +4,8 @@ import ch.oxb.yabchat.adapters.mongodb.user.UserEntity
 import ch.oxb.yabchat.business.chatroom.Chatroom
 import ch.oxb.yabchat.business.chatroom.ChatroomService
 import ch.oxb.yabchat.business.user.User
+import ch.oxb.yabchat.business.user.UserProfile
+import ch.oxb.yabchat.business.user.UserProfileService
 import ch.oxb.yabchat.business.user.UserService
 import jakarta.inject.Inject
 import org.eclipse.microprofile.graphql.*
@@ -13,6 +15,9 @@ class UserResource {
 
     @Inject
     lateinit var userService: UserService
+
+    @Inject
+    lateinit var userProfileService: UserProfileService
 
     @Inject
     lateinit var chatroomService: ChatroomService
@@ -26,6 +31,10 @@ class UserResource {
     fun chatrooms(@Source user: User): List<Chatroom> {
         return chatroomService.getChatrooms()
             .filter { chatroom: Chatroom -> chatroom.userIds.contains(user.id) }
+    }
+
+    fun userProfile(@Source user: User): UserProfile? {
+        return userProfileService.findUserProfileByUserId(user.id)
     }
 
     @Query
